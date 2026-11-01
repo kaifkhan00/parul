@@ -1,9 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% block title %}{{ brand.name }} | Handmade Kurtis, Sarees & Ethnic Wear{% endblock %}</title>
+<link rel="icon" type="image/jpeg" href="{% static 'shop/logo.jpg' %}">
+<link rel="shortcut icon" href="{% static 'shop/logo.jpg' %}">
 <meta name="description" content="{{ brand.tagline }}. Handmade kurtis, sarees and ethnic wear starting at ₹150.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

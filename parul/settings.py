@@ -44,7 +44,9 @@ DATABASES = {
         os.environ["DATABASE_URL"], conn_max_age=600, conn_health_checks=True, ssl_require=True
     )
 }
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "shop" / "static"]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
