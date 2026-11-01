@@ -31,8 +31,8 @@ class Product(models.Model):
 
     @property
     def order_message(self):
-        return f"Hi {BRAND['name']}! I'd like to order: {self.name} (₹{self.price})"
-
+    # ye return khali hai kya? Isko ye kar de
+         return f"Hi! I want to order {self.title} - Price: ₹{self.price}. Code: {self.id}"
     @property
     def ig_order_url(self):
         return f"https://ig.me/m/{BRAND['handle']}?text={quote(self.order_message)}"
