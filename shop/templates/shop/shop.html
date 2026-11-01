@@ -1,0 +1,20 @@
+{% extends "shop/base.html" %}
+{% block title %}Shop | {{ brand.name }}{% endblock %}
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 pt-8">
+  <h1 class="font-display text-4xl md:text-5xl font-bold text-maroon">Shop</h1>
+  <p class="text-ink/60 mt-1">Kurtis, sarees and ethnic wear. 50% off sale on now.</p>
+  <form method="get" class="mt-5 flex gap-2">
+    <input name="q" value="{{ q }}" placeholder="Search kurtis, sarees..." class="flex-1 min-w-0 rounded-full border border-beige-200 bg-white px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold">
+    <button class="px-6 rounded-full bg-maroon text-beige-50 text-sm">Search</button>
+  </form>
+  <div class="mt-4 flex gap-2 text-sm">
+    <a href="{% url 'shop' %}" class="px-4 py-1.5 rounded-full border {% if not custom %}bg-maroon text-beige-50 border-maroon{% else %}border-beige-200 bg-white{% endif %}">All</a>
+    <a href="{% url 'shop' %}?custom=1" class="px-4 py-1.5 rounded-full border {% if custom %}bg-maroon text-beige-50 border-maroon{% else %}border-beige-200 bg-white{% endif %}">Custom stitching</a>
+  </div>
+  <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+    {% for p in products %}{% include "shop/_card.html" %}
+    {% empty %}<p class="col-span-full text-ink/60 py-10 text-center">Nothing matched. Try a different search or clear the filter.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

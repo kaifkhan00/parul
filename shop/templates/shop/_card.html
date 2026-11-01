@@ -1,0 +1,14 @@
+<a href="{{ p.get_absolute_url }}" class="group block bg-white rounded-xl overflow-hidden border border-beige-200">
+  <div class="relative aspect-[3/4] bg-beige-100 overflow-hidden">
+    <img src="{{ p.photo.url }}" alt="{{ p.name }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+    {% if p.discount_percent %}<span class="absolute top-2 left-2 bg-maroon text-beige-50 text-[11px] font-semibold px-2 py-1 rounded-md">{{ p.discount_percent }}% off</span>{% endif %}
+    {% if p.is_custom_available %}<span class="absolute bottom-2 left-2 bg-beige-50/95 text-maroon text-[11px] font-medium px-2 py-1 rounded-md">Custom stitching</span>{% endif %}
+  </div>
+  <div class="p-3">
+    <p class="text-[13px] text-ink/80 line-clamp-1">{{ p.name }}</p>
+    <p class="mt-1 flex items-baseline gap-2">
+      <span class="text-base font-semibold text-maroon">₹{{ p.price }}</span>
+      {% if p.discount_percent %}<span class="text-xs text-ink/45 line-through">₹{{ p.original_price }}</span>{% endif %}
+    </p>
+  </div>
+</a>

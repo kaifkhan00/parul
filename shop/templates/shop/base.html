@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ brand.name }} | Handmade Kurtis, Sarees & Ethnic Wear{% endblock %}</title>
+<meta name="description" content="{{ brand.tagline }}. Handmade kurtis, sarees and ethnic wear starting at ₹150.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { beige:{50:'#FBF6EE',100:'#F5EBDD',200:'#EADBC4'}, maroon:{DEFAULT:'#6B1A2B',dark:'#4A1020',light:'#8C2A40'}, gold:{DEFAULT:'#B8923A',light:'#D9B96C'}, ink:'#2B1A1E' },
+  fontFamily: { display:['"Cormorant Garamond"','serif'], sans:['Jost','system-ui','sans-serif'] }
+}}}
+</script>
+<style>
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  @media(min-width:768px){body{padding-bottom:0}}
+  .gold-ring{background:conic-gradient(from 200deg,#D9B96C,#B8923A,#6B1A2B,#B8923A,#D9B96C)}
+  .zari{background-image:repeating-linear-gradient(90deg,#B8923A 0 6px,transparent 6px 12px);height:2px;opacity:.6}
+</style>
+</head>
+<body class="bg-beige-50 text-ink font-sans antialiased">
+
+<header class="sticky top-0 z-40 bg-beige-50/90 backdrop-blur border-b border-beige-200" style="padding-top:env(safe-area-inset-top,0px)">
+  <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+    <div class="flex items-center gap-1">{% if request.resolver_match.url_name != 'home' %}<button type="button" aria-label="Back" onclick="if(history.length>1){history.back()}else{location.href='/'}" class="text-maroon text-4xl leading-none pb-1 pr-1">&lsaquo;</button>{% endif %}<a href="{% url 'home' %}" class="flex items-center gap-2.5">
+      <span class="gold-ring p-[2px] rounded-full"><span class="grid place-items-center w-9 h-9 rounded-full bg-maroon text-gold-light font-display text-lg font-bold">P</span></span>
+      <span class="leading-none"><span class="block font-display text-[19px] font-bold text-maroon">Parul Designer Creation</span><span class="block text-[11px] text-ink/60 mt-0.5">@{{ brand.handle }}</span></span>
+    </a></div>
+    <nav class="hidden md:flex items-center gap-7 text-sm font-medium">
+      <a href="{% url 'home' %}" class="hover:text-maroon">Home</a>
+      <a href="{% url 'shop' %}" class="hover:text-maroon">Shop</a>
+      <a href="{% url 'shop' %}?custom=1" class="hover:text-maroon">Custom stitching</a>
+      <a href="{{ ig_profile }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-full bg-maroon text-beige-50 hover:bg-maroon-dark">Follow on Instagram</a>
+    </nav>
+  </div>
+</header>
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="bg-maroon-dark text-beige-100 mt-16">
+  <div class="max-w-6xl mx-auto px-4 py-10 text-center">
+    <p class="font-display text-3xl text-gold-light">Parul Designer Creation</p>
+    <p class="mt-2 text-sm text-beige-100/70">{{ brand.tagline }}</p>
+    <a href="{{ ig_dm }}" target="_blank" rel="noopener" class="inline-block mt-5 px-6 py-2.5 rounded-full border border-gold text-gold-light text-sm hover:bg-gold hover:text-maroon-dark transition">Message us on Instagram</a>
+    <p class="mt-8 text-xs text-beige-100/50">Orders are taken through Instagram DM. © {% now "Y" %} Parul Designer Creation</p>
+  </div>
+</footer>
+
+<nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-beige-50/95 backdrop-blur border-t border-beige-200" style="padding-bottom:env(safe-area-inset-bottom,0px)">
+  <div class="grid grid-cols-3 h-16 text-[11px] font-medium text-ink/70">
+    <a href="{% url 'home' %}" class="flex flex-col items-center justify-center gap-1 {% if request.resolver_match.url_name == 'home' %}text-maroon{% endif %}">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Home</a>
+    <a href="{% url 'shop' %}" class="flex flex-col items-center justify-center gap-1 {% if request.resolver_match.url_name == 'shop' %}text-maroon{% endif %}">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Shop</a>
+    <a href="{{ ig_profile }}" target="_blank" rel="noopener" class="flex flex-col items-center justify-center gap-1">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg>Instagram</a>
+  </div>
+</nav>
+</body>
+</html>

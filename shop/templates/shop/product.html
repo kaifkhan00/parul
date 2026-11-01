@@ -1,0 +1,74 @@
+{% extends "shop/base.html" %}
+{% block title %}{{ p.title }} | {{ brand.name }}{% endblock %}
+{% block content %}
+<section class="max-w-6xl mx-auto md:px-4 md:pt-8 grid md:grid-cols-2 md:gap-10">
+  <div class="relative bg-beige-100 md:rounded-2xl overflow-hidden aspect-[4/5]">
+    <img src="{{ p.photo.url }}" alt="{{ p.title }}" class="w-full h-full object-cover">
+    {% if p.discount_percent %}<span class="absolute top-4 left-4 bg-maroon text-beige-50 text-xs font-semibold px-3 py-1.5 rounded-md">{{ p.discount_percent }}% off</span>{% endif %}
+  </div>
+  <div class="px-4 py-6 md:py-2">
+    <a href="{% url 'shop' %}" class="text-sm text-ink/60 hover:text-maroon">Back to shop</a>
+    <h1 class="font-display text-3xl md:text-5xl font-bold text-maroon mt-2 leading-tight">{{ p.title }}</h1>
+    <p class="mt-4 flex items-baseline gap-3">
+      <span class="text-3xl font-semibold text-maroon">₹{{ p.price }}</span>
+      {% if p.discount_percent %}<span class="text-lg text-ink/45 line-through">₹{{ p.original_price }}</span><span class="text-sm font-medium text-gold">Save ₹{{ saving }}</span>{% endif %}
+    </p>
+    <div class="zari my-6"></div>
+    {% if p.description %}<div class="text-ink/80 leading-relaxed whitespace-pre-line">{{ p.description }}</div>{% endif %}
+    {% if p.is_custom_available %}
+      <div class="mt-6 rounded-xl border border-gold/50 bg-beige-100 p-4 text-sm">
+        <b class="text-maroon">Custom stitching available.</b> Tell us your size and any changes you want when you message us.
+      </div>
+    {% endif %}
+    <div class="hidden md:block mt-8">
+      <button type="button" data-order data-msg="{{ p.order_message }}" data-url="{{ p.ig_order_url }}" class="w-full py-4 rounded-full bg-maroon text-beige-50 font-semibold hover:bg-maroon-dark transition">Order on Instagram</button>
+      <p class="text-xs text-ink/50 mt-3 text-center">Opens Instagram DM with your product name. No payment on this site.</p>
+    </div>
+  </div>
+</section>
+
+<div class="md:hidden fixed inset-x-0 bottom-16 z-30 px-4 pb-2" style="bottom:calc(64px + env(safe-area-inset-bottom,0px))">
+  <button type="button" data-order data-msg="{{ p.order_message }}" data-url="{{ p.ig_order_url }}" class="w-full py-3.5 rounded-full bg-maroon text-beige-50 font-semibold shadow-lg shadow-maroon/30">Order on Instagram · ₹{{ p.price }}</button>
+</div>
+
+{% if more %}
+<section class="max-w-6xl mx-auto px-4 pt-14">
+  <h2 class="font-display text-3xl font-bold text-maroon mb-5">You may also like</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">{% for p in more %}{% include "shop/_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+<div id="sheet" hidden class="fixed inset-0 z-50 bg-black/50 flex items-end md:items-center justify-center">
+  <div class="relative w-full max-w-md bg-beige-50 rounded-t-3xl md:rounded-3xl p-5 pb-8">
+    <button type="button" data-x aria-label="Close" class="absolute right-4 top-2 text-3xl text-ink">&times;</button>
+    <h3 class="font-display text-2xl font-bold text-maroon">Order on Instagram</h3>
+    <p class="text-sm text-ink/60 mt-1 mb-4">Instagram does not allow websites to fill the chat box. Copy your order message, open the chat and paste it.</p>
+    <div id="msg" class="bg-beige-100 border border-dashed border-gold rounded-xl p-4 text-sm leading-relaxed select-all"></div>
+    <button type="button" id="copy" class="mt-4 w-full py-3.5 rounded-full bg-maroon text-beige-50 font-semibold">1. Copy message</button>
+    <a id="go" target="_blank" rel="noopener" class="mt-3 block text-center w-full py-3.5 rounded-full bg-gold text-maroon-dark font-semibold">2. Open Instagram chat</a>
+  </div>
+</div>
+<script>
+(function () {
+  var sheet = document.getElementById('sheet'), msg = document.getElementById('msg'),
+      go = document.getElementById('go'), copy = document.getElementById('copy');
+  function doCopy(t, done) {
+    var ok = false;
+    try { var a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(a); a.select(); ok = document.execCommand('copy'); a.remove(); } catch (e) {}
+    if (ok || !navigator.clipboard) return done(ok);
+    navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); });
+  }
+  document.querySelectorAll('[data-order]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      msg.textContent = b.dataset.msg; go.href = b.dataset.url;
+      copy.textContent = '1. Copy message'; sheet.hidden = false;
+    });
+  });
+  copy.addEventListener('click', function () {
+    doCopy(msg.textContent, function (ok) { copy.textContent = ok ? 'Copied. Now open the chat' : 'Press and hold the message above to copy'; });
+  });
+  sheet.addEventListener('click', function (e) { if (e.target === sheet || e.target.hasAttribute('data-x')) sheet.hidden = true; });
+})();
+</script>
+{% endblock %}
