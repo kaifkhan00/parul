@@ -1,6 +1,12 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Product, FeedPost
 
+from django.http import HttpResponse
+
+def health(request):
+    """Lightweight ping target for cron-job.org. Does not touch the database."""
+    return HttpResponse("ok", content_type="text/plain")
+
 def home(request):
     feed = list(FeedPost.objects.all()[:6])
     if len(feed) < 6:  # fall back to product photos until feed photos are uploaded
