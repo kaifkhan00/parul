@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}{{ block.super }}
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root, html[data-theme] {
+  --primary:#C2457A; --secondary:#8E2552; --accent:#D9B96C;
+  --primary-fg:#FFF7F9; --body-fg:#3A1F2B; --body-bg:#FFF7F9; --body-quiet-color:#7a5a68; --body-loud-color:#3A1F2B;
+  --header-color:#FDE8EE; --header-branding-color:#D9B96C; --header-bg:#8E2552; --header-link-color:#FFF7F9;
+  --breadcrumbs-bg:#C2457A; --breadcrumbs-fg:#F6D3DE; --breadcrumbs-link-fg:#FFF7F9;
+  --link-fg:#C2457A; --link-hover-color:#B8923A; --link-selected-fg:#B8923A;
+  --hairline-color:#F6D3DE; --border-color:#F6D3DE; --darkened-bg:#FDE8EE; --selected-bg:#FDE8EE; --selected-row:#FDE8EE;
+  --button-fg:#FFF7F9; --button-bg:#C2457A; --button-hover-bg:#8E2552;
+  --default-button-bg:#B8923A; --default-button-hover-bg:#9A7A2D;
+  --object-tools-fg:#FFF7F9; --object-tools-bg:#C2457A; --object-tools-hover-bg:#8E2552;
+  color-scheme: light;
+}
+body, input, select, textarea, button { font-family: Jost, system-ui, sans-serif; }
+#header { border-bottom: 3px solid #B8923A; }
+#site-name a { font: 700 1.7rem "Cormorant Garamond", Georgia, serif; letter-spacing: .3px; }
+h1, #content h1 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 2rem; color: #C2457A; }
+.module { border: 1px solid #F6D3DE; border-radius: 10px; overflow: hidden; }
+.module h2, .module caption, .inline-group h2 { background: #C2457A; }
+input[type=submit].default, .button.default { color: #4A1029; font-weight: 600; }
+.button, input[type=submit], input[type=button], .submit-row input, a.button { border-radius: 99px; }
+.object-tools a { border-radius: 99px; }
+input:focus, select:focus, textarea:focus { outline: 2px solid #B8923A; border-color: #B8923A; }
+</style>
+{% endblock %}

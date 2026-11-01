@@ -19,11 +19,14 @@ if RENDER_HOST:
 
 
 USE_CLOUDINARY = bool(os.environ.get("CLOUDINARY_URL"))
+
 INSTALLED_APPS = [
+    "shop",
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "shop",
 ] + (["cloudinary_storage", "cloudinary"] if USE_CLOUDINARY else [])
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
