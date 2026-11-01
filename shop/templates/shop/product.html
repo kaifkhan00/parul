@@ -17,65 +17,69 @@
     <div class="zari my-6"></div>
     {% if p.description %}<div class="text-ink/80 leading-relaxed whitespace-pre-line">{{ p.description }}</div>{% endif %}
     <div class="hidden md:block mt-8">
-      <button type="button" id="btnDesk" class="w-full py-4 rounded-full bg-maroon text-beige-50 font-semibold">Order on Instagram</button>
+      <button type="button" id="btnDesk" data-title="{{ p.title }}" data-price="{{ p.price }}" data-id="{{ p.id }}" class="w-full py-4 rounded-full bg-maroon text-beige-50 font-semibold">Order on Instagram</button>
     </div>
   </div>
 </section>
 
 <div class="md:hidden fixed inset-x-0 z-30 px-4 pb-2" style="bottom:calc(64px + env(safe-area-inset-bottom,0px))">
-  <button type="button" id="btnMob" class="w-full py-3.5 rounded-full bg-maroon text-beige-50 font-semibold shadow-lg">Order on Instagram · ₹{{ p.price }}</button>
+  <button type="button" id="btnMob" data-title="{{ p.title }}" data-price="{{ p.price }}" data-id="{{ p.id }}" class="w-full py-3.5 rounded-full bg-maroon text-beige-50 font-semibold shadow-lg">Order on Instagram · ₹{{ p.price }}</button>
 </div>
 
 <div id="sheet" hidden class="fixed inset-0 z-[9999] bg-black/60 flex items-end md:items-center justify-center p-0 md:p-4">
   <div class="relative w-full max-w-md bg-beige-50 rounded-t-3xl md:rounded-3xl p-5 pb-8 shadow-2xl">
-<button type="button" id="closeX" class="absolute right-3 top-3 w-10 h-10 grid place-items-center rounded-full bg-beige-100 text-2xl font-bold cursor-pointer z-50">×</button>    <p class="text-sm text-ink/60 mt-1 mb-4">Copy your order message, open the chat and paste it.</p>
+    <button type="button" id="closeX" class="absolute right-3 top-3 w-10 h-10 grid place-items-center rounded-full bg-beige-100 text-2xl font-bold cursor-pointer z-50">×</button>
+    <h3 class="font-display text-2xl font-bold text-maroon pr-10">Order on Instagram</h3>
+    <p class="text-sm text-ink/60 mt-1 mb-4">Copy your order message, open the chat and paste it.</p>
     
-    <!-- YAHAN DIRECT MESSAGE LIKHA HAI, KHALI KABHI NAHI HOGA -->
-    <div id="msg" class="bg-beige-100 border border-dashed border-gold rounded-xl p-4 text-sm leading-relaxed whitespace-pre-line select-all">Hi Parul Designer Creation! 👋
+    <div id="msg" class="bg-beige-100 border border-dashed border-gold rounded-xl p-4 text-sm leading-relaxed whitespace-pre-line">Hi Parul Designer Creation! 👋
 I want to order: {{ p.title }}
 Price: ₹{{ p.price }}
 Product ID: {{ p.id }}
 Please confirm availability and stitching.</div>
 
     <button type="button" id="copy" class="mt-4 w-full py-3.5 rounded-full bg-maroon text-beige-50 font-semibold">1. Copy message</button>
-    <a id="go" href="https://ig.me/m/parul.desginer_creation" target="_blank" class="mt-3 block text-center w-full py-3.5 rounded-full bg-gold text-maroon-dark font-semibold">2. Open Instagram chat</a>
+    <a href="https://ig.me/m/parul.desginer_creation" target="_blank" class="mt-3 block text-center w-full py-3.5 rounded-full bg-gold text-maroon-dark font-semibold">2. Open Instagram chat</a>
   </div>
 </div>
+
 <script>
 (function(){
   var sheet = document.getElementById('sheet');
   var msg = document.getElementById('msg');
-  
-  function openSheet(){ 
+  function buildMsg(t, pr, id){
+    return "Hi Parul Designer Creation! \nI want to order: " + t + "\nPrice: Rs." + pr + "\nProduct ID: " + id + "\nPlease confirm availability and stitching.";
+  }
+  function openSheet(btn){
+    var title = btn.getAttribute('data-title') || "{{ p.title|escapejs }}";
+    var price = btn.getAttribute('data-price') || "{{ p.price }}";
+    var pid = btn.getAttribute('data-id') || "{{ p.id }}";
+    // Agar live pe div khali ho to JS se bhar do
+    if(!msg.innerText.trim()){
+      msg.innerText = buildMsg(title, price, pid);
+    }
     sheet.removeAttribute('hidden');
     sheet.hidden = false;
     sheet.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
   }
-  function closeSheet(){ 
+  function closeSheet(){
     sheet.hidden = true;
     sheet.setAttribute('hidden','');
     sheet.style.display = 'none';
-    document.body.style.overflow = ''; 
+    document.body.style.overflow = '';
   }
   window.closeSheet = closeSheet;
-
-  document.getElementById('btnDesk')?.addEventListener('click', openSheet);
-  document.getElementById('btnMob')?.addEventListener('click', openSheet);
-  
-  // Close - chahe id ho ya na ho, X wala button pakad lega
-  var closeBtn = document.getElementById('closeX') || document.querySelector('[data-x]');
-  if(closeBtn) closeBtn.addEventListener('click', closeSheet);
-  
-  sheet.addEventListener('click', function(e){ 
-    if(e.target === sheet) closeSheet(); 
-  });
-  
+  document.getElementById('btnDesk')?.addEventListener('click', function(){ openSheet(this); });
+  document.getElementById('btnMob')?.addEventListener('click', function(){ openSheet(this); });
+  document.getElementById('closeX')?.addEventListener('click', closeSheet);
+  sheet.addEventListener('click', function(e){ if(e.target === sheet) closeSheet(); });
   document.getElementById('copy')?.addEventListener('click', function(){
-    navigator.clipboard.writeText(msg.innerText || msg.textContent);
+    var txt = msg.innerText.trim() || buildMsg("{{ p.title|escapejs }}","{{ p.price }}","{{ p.id }}");
+    msg.innerText = txt;
+    navigator.clipboard.writeText(txt);
     this.textContent = '✓ Copied!';
-    var self=this;
-    setTimeout(function(){ self.textContent='1. Copy message'; }, 2000);
+    var self=this; setTimeout(function(){ self.textContent='1. Copy message'; },2000);
   });
 })();
 </script>
