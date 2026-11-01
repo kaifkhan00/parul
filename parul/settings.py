@@ -17,14 +17,8 @@ INSTALLED_APPS = [
     "shop",
 ]
 MIDDLEWARE = [
-<<<<<<< HEAD
-   
-
- "django.middleware.security.SecurityMiddleware",
-=======
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
->>>>>>> 7ecc869 (Add gunicorn and deploy packages)
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
